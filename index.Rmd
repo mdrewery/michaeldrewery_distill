@@ -1,5 +1,5 @@
 ---
-title: "Michael Drewery"
+title: "Data Science and Statistics"
 description: |
   Welcome to my Analytics Website!
 site: distill::distill_website
@@ -13,10 +13,17 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-![](LinkedIn.JPG){width=200}
+
 
 ## About me:
 
+
 ## Education:
+
+
+## Tableau Projects:
+
+<iframe src="https://public.tableau.com/views/ESPNFantasyAPI-WeddingtonTheLeagueHistory/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link&:showVizHome=no&:embed=true"
+width="645" height="645"></iframe>
 
 
