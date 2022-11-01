@@ -5,15 +5,21 @@
       "title": "Blog",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-10-16T17:23:34-04:00"
+      "last_modified": "2022-11-01T11:52:08-04:00"
+    },
+    {
+      "path": "Dashboards.html",
+      "title": "Dashboards",
+      "author": [],
+      "contents": "\r\nESPN API Python Analysis\r\n\r\n\r\nNC State Women’s Tennis\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2022-11-01T11:52:10-04:00"
     },
     {
       "path": "index.html",
-      "title": "Data Science and Statistics",
-      "description": "Welcome to my Analytics Website!\n",
+      "title": "",
       "author": [],
-      "contents": "\r\nAbout me:\r\nEducation:\r\nTableau Projects:\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-10-16T17:23:38-04:00"
+      "contents": "\r\nData Science & Analytics Portfolio\r\n\r\n\r\n\r\n\r\n\r\n\r\nAbout me:\r\nEducation:\r\nTableau Projects:\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2022-11-01T11:52:16-04:00"
     }
   ],
   "collections": ["posts/posts.json"]

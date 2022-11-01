@@ -1,0 +1,18 @@
+---
+title: "Dashboards"
+---
+
+<div class='index-title' style="">
+# ESPN API Python Analysis
+</div>
+<iframe src="https://public.tableau.com/views/ESPNFantasyAPI-WeddingtonTheLeagueHistory/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link&:showVizHome=no&:embed=true"
+width="1500" height="1000"></iframe>
+
+
+<div class='index-title' style="">
+# NC State Women's Tennis
+</div>
+<iframe src="https://public.tableau.com/views/NCSUWomensTennisPerformanceIAA2023/Home?:language=en-US&:display_count=n&:origin=viz_share_link&:showVizHome=no&:embed=true"
+width="1500" height="1000"></iframe>
+
+

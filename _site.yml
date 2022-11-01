@@ -1,8 +1,8 @@
-name: "website"
+name: "michael-drewery"
 title: "Michael Drewery"
 theme: michael_theme_custom.css
 description: |
-  Analytics Portfolio
+  Data Science and Analytics Portfolio
 output_dir: "_site"
 navbar:
   logo:
@@ -12,11 +12,17 @@ navbar:
       href: index.html
     - text: "Blog"
       href: Blog.html
+    - text: "Dashboards"
+      href: Dashboards.html
     - icon: fa fa-github
       href: https://github.com/mdrewery
     - icon: fa fa-linkedin
       href: https://www.linkedin.com/in/michael-drewery
     - icon: fa fa-twitter
       href: https://twitter.com/michaeldrewery1
-output: distill::distill_article
+output: 
+  distill::distill_article:
+    css: michael_theme_custom.css
+    anchor_sections: FALSE
+repository_url: https://github.com/mdrewery/michaeldrewery_distill
   

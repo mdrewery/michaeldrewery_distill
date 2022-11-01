@@ -13,7 +13,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Amiri');
 @import url('https://fonts.googleapis.com/css2?family=Bitter');
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono');
+@import url("pygment_highlights.css");
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);
+@import url("https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Roboto+Condensed|Open+Sans|Open+Sans+Condensed:300|Open+Sans+Condensed:light|Lato|Lora|Fira+Sans|Fira+Mono");
 
+
+.index-title h1 {
+  font-family: 'Open Sans Condensed', Roboto, Helvetica, Arial, sans;
+  font-weight: 200;
+  font-size: 50px;
+  font-variant: small-caps;
+  text-align: center;
+  color: #f7941e;
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+  border-bottom: 0; /*same as default h2*/
+  padding-bottom: 1rem; 
+}
 
 html {
   /*-- Main font sizes --*/
