@@ -8,18 +8,18 @@ navbar:
   logo:
     image: IAAlogo.jfif
   right:
-    - text: "About"
+    - text: "Home"
       href: index.html
     - text: "Blog"
       href: Blog.html
     - text: "Dashboards"
       href: Dashboards.html
+    - text: "Resume"
+      href: Resume.pdf
     - icon: fa fa-github
       href: https://github.com/mdrewery
     - icon: fa fa-linkedin
       href: https://www.linkedin.com/in/michael-drewery
-    - icon: fa fa-twitter
-      href: https://twitter.com/michaeldrewery1
 output: 
   distill::distill_article:
     css: michael_theme_custom.css
