@@ -171,6 +171,47 @@ ggplot() +
 
 ## About me:
 
+The driving force behind my passion for numbers stretches back to the memorable times
+watching football cultivated with my father and brother. From witnessing the pure bliss of
+cheering a victory together, to comforting each other in times of playoff defeat, the love I felt left
+a permanent impression. Every season we rode the emotional rollercoaster of a Panthers fan with
+hope remaining each year that a Super Bowl victory was on the horizon. 
+
+My passion for numbers was continuously present throughout college as I found
+opportunities outside of the business school in the UNC Basketball Team and extra economics
+classes that exercised my statistics skills. These accomplishments connected data to outcomes in
+a practical way that resonated with the type of analyses that are exciting to me such as analyzing
+player tendencies for coaches or weekly economic data to assess financial market conditions.
+My finance experiences were exclusively on the mergers & acquisitions side valuing companies based on
+different financial analyses. I gained a robust investment knowledge that coupled well with my
+undergraduate degree; but quickly realized my excitement wasn’t evaluating businesses for a
+dollar amount, rather it lied in contributing to a businesses’ competitive advantage that generated
+these valuations in the first place for Investment Banks.
+
+With a year of experience in a startup culture at Red Ventures, shifting to Wells Fargo
+provided a different perspective in regards to how larger corporations manage and innovate their
+database systems. I encountered this perspective running another migration project, now at the bank,
+which exposed me to significantly more data volume and downstream impact than a start-up
+environment. This project continued to exercise my communication and collaboration skills, as it
+was completed remotely and involved international groups. Both of my database migration
+projects accelerated my understanding of the entire data process from creation to
+implementation; however, I remained passionate about the post-implementation side of data
+where it’s manipulated and analyzed to drive insights, as this aligns with my true career goals
+and kept the Institute for Analytics top of mind.
+
+Both my professional experiences and undergraduate studies highlighted how finance and
+data impact virtually everything in society, and understanding their implication is the best way to
+gain useful, performable information. When evaluating my data aptitude, I recognized the one
+explicit gap in being a well-rounded data analyst was my lack of mathematical and practical
+education deriving data to garner and communicate insights. The Institute for Analytics has been the
+dream opportunity to build a complete foundation in the field where I was fortunate to discover
+my passion. 
+
+Now that I'm in the program, I'm very fortunate to be continuously fulfilling my mathematics and 
+statistics curiosity in an analytics application. Furthermore, the opportunity to unite with a 
+large, diverse group of like-minded individuals has been special and produced an environment
+that's been a pleasure to subscribe to daily.
+
 
 
 
