@@ -3,7 +3,7 @@ title: "Dashboards"
 ---
 # https://public.tableau.com/app/profile/michael.drewery
 
-# click above to fully view dashboards on Tableau Public
+# ^Click to view full dashboards on Tableau Public
 
 
 <div class='index-title' style="">
