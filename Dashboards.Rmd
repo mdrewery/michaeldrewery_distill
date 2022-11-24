@@ -1,9 +1,17 @@
 ---
 title: "Dashboards"
 ---
+# https://public.tableau.com/app/profile/michael.drewery
+
+# click above to fully view dashboards on Tableau Public
+
 
 <div class='index-title' style="">
 # ESPN API Python Analysis
+This dashboard was derived from the ESPN Fantasy Football API where I utilized
+Python to extract and manipulate our high school league's scoring data for the 
+past five years. The end result was to characterize each manager's season from
+week to week across six categories.
 </div>
 <iframe src="https://public.tableau.com/views/ESPNFantasyAPI-WeddingtonTheLeagueHistory/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link&:showVizHome=no&:embed=true"
 width="1500" height="1000"></iframe>
@@ -11,6 +19,11 @@ width="1500" height="1000"></iframe>
 
 <div class='index-title' style="">
 # NC State Women's Tennis
+This dashboard request originated from the Head Coach of NC State Women's Tennis
+which shines as a top-5 program thanks to his trust in analytics. The goal of
+the project was to deliver 19 KPIs across both players and team over the past three
+years. The end result was 4 unique dashboards on a title page for Coach Secker
+which he selected to leverage for this upcoming recruiting season!!
 </div>
 <iframe src="https://public.tableau.com/views/NCSUWomensTennisPerformanceIAA2023/Home?:language=en-US&:display_count=n&:origin=viz_share_link&:showVizHome=no&:embed=true"
 width="1500" height="1000"></iframe>
