@@ -15,7 +15,7 @@ navbar:
     - text: "Dashboards"
       href: Dashboards.html
     - text: "Resume"
-      href: Resume.pdf
+      href: Resume_updated.pdf
     - icon: fa fa-github
       href: https://github.com/mdrewery
     - icon: fa fa-linkedin
