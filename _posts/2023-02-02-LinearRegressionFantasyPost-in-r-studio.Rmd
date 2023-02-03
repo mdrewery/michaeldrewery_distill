@@ -20,7 +20,9 @@ The beginning of my master’s program curriculum introduced linear regression a
 
 I understood my limitations with the predictions from a linear regression, and quite frankly didn’t see the value in generating an ordered list of projected points for players, as that never seemed to help with decision making in years past. “What if a few of your target players get drafted, how do re-prioritize remaining players?” was the question in the back of my mind. So from my perspective, there was more value in identifying key relationships in certain stats to fantasy point output, so I could have a fluid evaluation tool throughout the entire Fantasy Draft. I was specifically interested in identifying key metrics to compare between wide receivers as this position group is obviously the largest amount of players to choose from out of all position groups, and they usually take up the most roster spots per team.
 
-The data utilized was a graded receiving summary from PFF for the years 2014-2019 which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play, that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name so all needs to be accounted for before moving on from exploratory data analysis.
+The data utilized was a graded receiving summary from PFF for the years 2014-2019 which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play, that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name so all needs to be accounted for before moving on from exploratory data analysis. 
+
+See the cleaned dataframe summary below:
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -33,7 +35,7 @@ wr_2017 <- read.csv("receiving_summary (2).csv")
 wr_2018 <- read.csv("receiving_summary (1).csv")
 wr_2019 <- read.csv("receiving_summary.csv")
 
-str(wr_2014)
+#str(wr_2014)
 
 library(tidyverse)
 library(sqldf)
@@ -50,10 +52,12 @@ ovr_wr_summary$player<-ovr_wr_summary$player%>%
   str_replace_all(c("yI "="y", "Jr."="", "Melvin Gordon I" = "Melvin Gordon","II"="","III"="", "IV"="", " V"="", "Sr."="", "nI "="n"))
 
 ovr_wr_summary$player <- str_trim(ovr_wr_summary$player, "right")
+
+str(ovr_wr_summary)
 ```
 
 
-After my data manipulation step, I wanted to filter down on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”
+After my data manipulation step, I wanted to filter down on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”:
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -76,11 +80,11 @@ nfl_data_final_mutate <- mutate(nfl_data_final_mutate, Fantasy_WR_Rec=receptions
 
 nfl_data_final_mutate <- mutate(nfl_data_final_mutate, Fantasy_WR_Total=Fantasy_WR_Yards+Fantasy_WR_TDs+Fantasy_WR_Rec)
 
-view(sqldf("select * from nfl_data_final_mutate order by Fantasy_WR_Total desc"))
+str(nfl_data_final_mutate)
 ```
 
 
-I was curious how the offensive line performance impacted wide receiver fantasy production so I added PFF’s pass blocking efficiency grade to the data as another variable.
+I was curious how the offensive line performance impacted wide receiver fantasy production so I added PFF’s pass blocking efficiency grade to the data as another variable:
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -103,10 +107,17 @@ view(joined_wr_ol)
 
 write.csv(joined_wr_ol, "WR&OLdata.csv")
 
+str(joined_wr_ol)
+
 ```
 
 
-Keeping just player ID and year with all the other numeric and graded fields, I was ready to test assumptions before model building. I’ll spare you the nuances of the assumption testing here as it’s commented in the code below.
+Keeping just player ID and year with all the other numeric and graded fields, I was ready to test assumptions before model building. I’ll highlight the order of assumption testing below:
+  1. Dataframe used for modeling
+  2. VIF (Variance Inflation Factor) for multicollinearity
+  3. Residual plot followed by Spearman's Test for Heteroscedascticity
+  4. Histogram of residuals followed by Anderson-Darling's normality test
+  5. Other residual plots to assess normality
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -141,8 +152,8 @@ library(epiDisplay)
 library(gridExtra)
 library(AppliedPredictiveModeling)
 
-lm.model=lm(Fantasy_WR_Total~.,data=nfl_model_data)
-vif(lm.model)
+#lm.model=lm(Fantasy_WR_Total~.,data=nfl_model_data)
+#vif(lm.model)
 
 
 
@@ -165,9 +176,28 @@ par(mfrow=c(2,2))
 plot(lm.modelv2)
 ```
 
-Once I confirmed the assumptions I moved onto the cor 
+Once I confirmed the assumptions above, I moved onto examining the correlation matrix with my target variable:
 
+```{r}
+setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
 
+nfl_model_data_V2 <- read.csv("WR&OLdata_filteredformodel.csv")
+
+cor(nfl_model_data_V2[, c('Fantasy_WR_Total','targets','caught_percent','grades_offense','pbe','grades_pass_route', 'grades_hands_drop', 'yards_per_reception', 'yards_after_catch_per_reception', 'first_downs', 'avoided_tackles', 'targeted_qb_rating', 'touchdowns')])
+
+```
+
+After paying attention to the first column in our output above to get an idea of the strength of our relationship between our predictors and target. Now all that's left is reviewing our final model below:
+
+```{r}
+setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
+
+nfl_model_data_V2 <- read.csv("WR&OLdata_filteredformodel.csv")
+
+lm.modelv2=lm(Fantasy_WR_Total~.,data=nfl_model_data_V2)
+
+summary(lm.modelv2)
+```
 
 
 
