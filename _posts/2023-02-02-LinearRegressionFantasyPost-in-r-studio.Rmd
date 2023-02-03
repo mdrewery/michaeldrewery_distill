@@ -22,7 +22,8 @@ I understood my limitations with the predictions from a linear regression, and q
 
 The data utilized was a graded receiving summary from PFF for the years 2014-2019 which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play, that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name so all needs to be accounted for before moving on from exploratory data analysis. 
 
-See the cleaned dataframe summary below:
+
+See the cleaned dataframe summary below that includes RBs, WRs, TEs:
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -57,6 +58,8 @@ str(ovr_wr_summary)
 ```
 
 
+
+
 After my data manipulation step, I wanted to filter down on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”:
 
 ```{r}
@@ -82,6 +85,8 @@ nfl_data_final_mutate <- mutate(nfl_data_final_mutate, Fantasy_WR_Total=Fantasy_
 
 str(nfl_data_final_mutate)
 ```
+
+
 
 
 I was curious how the offensive line performance impacted wide receiver fantasy production so I added PFF’s pass blocking efficiency grade to the data as another variable:
@@ -112,12 +117,15 @@ str(joined_wr_ol)
 ```
 
 
+
+
 Keeping just player ID and year with all the other numeric and graded fields, I was ready to test assumptions before model building. I’ll highlight the order of assumption testing below:
-  1. Dataframe used for modeling
-  2. VIF (Variance Inflation Factor) for multicollinearity
-  3. Residual plot followed by Spearman's Test for Heteroscedascticity
-  4. Histogram of residuals followed by Anderson-Darling's normality test
-  5. Other residual plots to assess normality
+
+1. Dataframe used for modeling
+2. VIF (Variance Inflation Factor) for multicollinearity
+3. Residual plot followed by Spearman's Test for Heteroscedascticity
+4. Histogram of residuals followed by Anderson-Darling's normality test
+5. Other residual plots to assess normality
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -176,6 +184,9 @@ par(mfrow=c(2,2))
 plot(lm.modelv2)
 ```
 
+
+
+
 Once I confirmed the assumptions above, I moved onto examining the correlation matrix with my target variable:
 
 ```{r}
@@ -186,6 +197,9 @@ nfl_model_data_V2 <- read.csv("WR&OLdata_filteredformodel.csv")
 cor(nfl_model_data_V2[, c('Fantasy_WR_Total','targets','caught_percent','grades_offense','pbe','grades_pass_route', 'grades_hands_drop', 'yards_per_reception', 'yards_after_catch_per_reception', 'first_downs', 'avoided_tackles', 'targeted_qb_rating', 'touchdowns')])
 
 ```
+
+
+
 
 After paying attention to the first column in our output above to get an idea of the strength of our relationship between our predictors and target. Now all that's left is reviewing our final model below:
 
@@ -200,5 +214,28 @@ summary(lm.modelv2)
 ```
 
 
+
+
+##Main Takeaway
+
+1. First downs caught has the strongest relationship and largest impact on fantasy points
+2. Targets should be prioritized regardless of offensive line pass blocking performance and QB
+3. Touchdowns are obviously important but volatile year to year for players which must be considered
+
+This translates to targeting WRs and TEs that are vertical threats who are trusted to move the chains for their teams. It also highlights leaning into the risky rookie class based on sheer volume in certain offenses. For me, this led to comparing first down catches from the year prior and average target depth, helpful in rookie cases, for almost every round I drafted a WR or TE.
+
+
+##Results
+
+1st (10 teams), 2nd (12 teams), 2nd (12 teams) in Points For (points scored by my team throughout weeks 1-14) across three leagues.
+
+The research above led to some very positive outcomes for the season. I had high success targeting these types of WRs and TEs such as: DeVonta Smith, Chris Olave, Garrett Wilson, Christian Watson, David Njoku, Cole Kmet, Michael Pittman Jr., Drake London. This pushed me to prioritize workhorse RBs in the beginning of the draft who also got receiving targets since the leagues are PPR scoring (Points Per Reception).
+
+Below are the resources I also used to help draft my team. The first link removed some initial biases I had and allowed me to test it out myself in Python! The second link helped me pick the right combination of RBs for my teams by reviewing the plots of Rushing Yards Over Expected charted with EPA. This made me prioritize the likes of Nick Chubb and Aaron Jones in rounds 2 & 3 and Tony Pollard by round 6 in every league I could. It was also helpful to view QBs on the plot and really highlighted Josh Allen's rushing value. Wish we could see Cam Newton's to compare.
+
+Correlation Matrices and Stacking Players - https://www.fantasyfootballdatapros.com/blog/intermediate/2
+Rushing Yards Over Expected charted with EPA  - https://mfbanalytics.shinyapps.io/RYOE/
+
+Thanks for checking out the post!
 
 
