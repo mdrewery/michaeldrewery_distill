@@ -1,0 +1,174 @@
+---
+title: "Linear Regression to help Fanasty Football Drafting"
+description: |
+  Exploring the relationship between certain stats and PFF grades for receiving
+author:
+  - name: Michael Drewery
+base_url: https://www.michaeldreweryanalytics.com/
+date: 2023-02-02
+preview: building.png
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+The beginning of my master’s program curriculum introduced linear regression as the introduction to model building. In practice, we were learning how to build this out in R, so it was exciting to progress in a new skill I came into the program looking to learn. This process timed well with the annual Fantasy Football Draft frenzy in August/September before the season begins. I’ve been playing for almost ten years now and was excited to apply some analytical skills to one of my many sports hobbies.
+
+I understood my limitations with the predictions from a linear regression, and quite frankly didn’t see the value in generating an ordered list of projected points for players, as that never seemed to help with decision making in years past. “What if a few of your target players get drafted, how do re-prioritize remaining players?” was the question in the back of my mind. So from my perspective, there was more value in identifying key relationships in certain stats to fantasy point output, so I could have a fluid evaluation tool throughout the entire Fantasy Draft. I was specifically interested in identifying key metrics to compare between wide receivers as this position group is obviously the largest amount of players to choose from out of all position groups, and they usually take up the most roster spots per team.
+
+The data utilized was a graded receiving summary from PFF for the years 2014-2019 which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play, that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name so all needs to be accounted for before moving on from exploratory data analysis.
+
+```{r}
+setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
+
+#Reading in Data
+wr_2014 <- read.csv("receiving_summary (5).csv")
+wr_2015 <- read.csv("receiving_summary (4).csv")
+wr_2016 <- read.csv("receiving_summary (3).csv")
+wr_2017 <- read.csv("receiving_summary (2).csv")
+wr_2018 <- read.csv("receiving_summary (1).csv")
+wr_2019 <- read.csv("receiving_summary.csv")
+
+str(wr_2014)
+
+library(tidyverse)
+library(sqldf)
+
+ovr_wr_summary <- bind_rows(wr_2014,wr_2015,wr_2016,wr_2017,wr_2018,wr_2019)
+
+#Joining Draft data
+draft_picks <- read_csv("https://raw.githubusercontent.com/leesharpe/nfldata/master/data/draft_picks.csv")
+
+draft_picks_2000_onward <- draft_picks %>% filter(season >= 2000)
+
+#Data manipulation below
+ovr_wr_summary$player<-ovr_wr_summary$player%>%
+  str_replace_all(c("yI "="y", "Jr."="", "Melvin Gordon I" = "Melvin Gordon","II"="","III"="", "IV"="", " V"="", "Sr."="", "nI "="n"))
+
+ovr_wr_summary$player <- str_trim(ovr_wr_summary$player, "right")
+```
+
+
+After my data manipulation step, I wanted to filter down on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”
+
+```{r}
+setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
+
+#Building out fantasy points below
+
+nfl_data <- read.csv("mydata_filtered.csv")
+
+nfl_data_final <- sqldf("select * from nfl_data where targets > 15")
+
+view(nfl_data_final)
+
+write.csv(nfl_data_final, "workingnfldataset.csv")
+
+nfl_data_final_mutate <- mutate(nfl_data_final, Fantasy_WR_Yards=yards/10)
+
+nfl_data_final_mutate <- mutate(nfl_data_final_mutate, Fantasy_WR_TDs=touchdowns*6)
+
+nfl_data_final_mutate <- mutate(nfl_data_final_mutate, Fantasy_WR_Rec=receptions*.5)
+
+nfl_data_final_mutate <- mutate(nfl_data_final_mutate, Fantasy_WR_Total=Fantasy_WR_Yards+Fantasy_WR_TDs+Fantasy_WR_Rec)
+
+view(sqldf("select * from nfl_data_final_mutate order by Fantasy_WR_Total desc"))
+```
+
+
+I was curious how the offensive line performance impacted wide receiver fantasy production so I added PFF’s pass blocking efficiency grade to the data as another variable.
+
+```{r}
+setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
+
+#Bringing in oline data
+
+ol_2014 <- read.csv("line_pass_blocking_efficiency (5).csv")
+ol_2015 <- read.csv("line_pass_blocking_efficiency (4).csv")
+ol_2016 <- read.csv("line_pass_blocking_efficiency (3).csv")
+ol_2017 <- read.csv("line_pass_blocking_efficiency (2).csv")
+ol_2018 <- read.csv("line_pass_blocking_efficiency (1).csv")
+ol_2019 <- read.csv("line_pass_blocking_efficiency.csv")
+
+ovr_blocking_team_summary <- bind_rows(ol_2014,ol_2015,ol_2016,ol_2017,ol_2018,ol_2019)
+
+joined_wr_ol <- nfl_data_final_mutate %>%
+  left_join(ovr_blocking_team_summary, by = c("team_name" = "team_name", "year" = "year"), keep = TRUE)
+
+view(joined_wr_ol)
+
+write.csv(joined_wr_ol, "WR&OLdata.csv")
+
+```
+
+
+Keeping just player ID and year with all the other numeric and graded fields, I was ready to test assumptions before model building. I’ll spare you the nuances of the assumption testing here as it’s commented in the code below.
+
+```{r}
+setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
+
+nfl_model_data <- read.csv("WR&OLdata_filteredformodel.csv")
+
+view(nfl_model_data)
+
+
+library(AmesHousing)
+library(tidyverse)
+library(car)
+library(DescTools)
+library(corrplot)
+library(mosaic)
+library(modelr)
+library(plotly)
+library(ggplot2)
+library(Hmisc)
+library(onehot)
+library(jmuOutlier)
+library(leaps)
+library(glmnet)
+library(nortest)
+library(lmtest)
+library(InformationValue)
+library(gmodels)
+library(vcdExtra)
+library(TSA)
+library(carData)
+library(epiDisplay)
+library(gridExtra)
+library(AppliedPredictiveModeling)
+
+lm.model=lm(Fantasy_WR_Total~.,data=nfl_model_data)
+vif(lm.model)
+
+
+
+nfl_model_data_V2 <- read.csv("WR&OLdata_filteredformodel.csv")
+str(nfl_model_data_V2)
+
+lm.modelv2=lm(Fantasy_WR_Total~.,data=nfl_model_data_V2)
+vif(lm.modelv2)
+
+
+ggplot(lm.modelv2,aes(x=fitted(lm.modelv2),y=resid(lm.modelv2)))+geom_point(color="blue")+labs(x="Predicted Values",y="Residuals")
+
+cor.test(abs(resid(lm.modelv2)),fitted.values(lm.modelv2),method="spearman",exact=T)
+
+hist(resid(lm.modelv2))
+
+ad.test(resid(lm.modelv2))
+
+par(mfrow=c(2,2))
+plot(lm.modelv2)
+```
+
+Once I confirmed the assumptions I moved onto the cor 
+
+
+
+
+
+
