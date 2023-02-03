@@ -16,12 +16,15 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-The beginning of my master’s program curriculum introduced linear regression as the introduction to model building. In practice, we were learning how to build this out in R, so it was exciting to progress in a new skill I came into the program looking to learn. This process timed well with the annual Fantasy Football Draft frenzy in August/September before the season begins. I’ve been playing for almost ten years now and was excited to apply some analytical skills to one of my many sports hobbies.
+The beginning of my master’s program curriculum introduced linear regression as the introduction to model building. In practice, we were learning how to build this out in R, so it was exciting to progress in a new skill I came into the program looking to learn. This process timed well with the annual Fantasy Football Draft frenzy in August/September before the season begins. I’ve been playing for almost ten years and was excited to apply analytical skills to one of my many sports hobbies.
 
-I understood my limitations with the predictions from a linear regression, and quite frankly didn’t see the value in generating an ordered list of projected points for players, as that never seemed to help with decision making in years past. “What if a few of your target players get drafted, how do re-prioritize remaining players?” was the question in the back of my mind. So from my perspective, there was more value in identifying key relationships in certain stats to fantasy point output, so I could have a fluid evaluation tool throughout the entire Fantasy Draft. I was specifically interested in identifying key metrics to compare between wide receivers as this position group is obviously the largest amount of players to choose from out of all position groups, and they usually take up the most roster spots per team.
+I understood my limitations with the predictions from a linear regression and, quite frankly, didn’t see the value in generating an ordered list of projected points for players, as that never seemed to help with decision-making in years past. “What if a few of your target players get drafted, how do you re-prioritize remaining players?” was the question in the back of my mind. So from my perspective, there was more value in identifying key relationships in specific stats to fantasy point output so that I could have a fluid evaluation tool throughout the entire Fantasy Draft. I was specifically interested in identifying key metrics to compare between wide receivers as this position group is obviously the most considerable amount of players to choose from out of all position groups, and they usually take up the most roster spots per team.
 
-The data utilized was a graded receiving summary from PFF for the years 2014-2019 which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play, that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name so all needs to be accounted for before moving on from exploratory data analysis. 
+The data utilized was a graded receiving summary from PFF for 2014-2019, which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely, the most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name, so all needs to be accounted for before moving on from exploratory data analysis.
 
+
+
+# Coding and Modeling Process Below
 
 See the cleaned dataframe summary below that includes RBs, WRs, TEs:
 
@@ -60,7 +63,7 @@ str(ovr_wr_summary)
 
 
 
-After my data manipulation step, I wanted to filter down on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”:
+After my data manipulation step, I wanted to filter on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”:
 
 ```{r}
 setwd("C:/Users/Michael/Documents/NC State/Side Project/NFL Combined Datasets WRs")
@@ -201,6 +204,8 @@ cor(nfl_model_data_V2[, c('Fantasy_WR_Total','targets','caught_percent','grades_
 
 
 
+## Reviewing Final Model Results
+
 After paying attention to the first column in our output above to get an idea of the strength of our relationship between our predictors and target. Now all that's left is reviewing our final model below:
 
 ```{r}
@@ -216,16 +221,16 @@ summary(lm.modelv2)
 
 
 
-##Main Takeaway
+### Main Takeaway
 
 1. First downs caught has the strongest relationship and largest impact on fantasy points
-2. Targets should be prioritized regardless of offensive line pass blocking performance and QB
+2. Targets should be prioritized regardless of offensive line pass-blocking performance and QB
 3. Touchdowns are obviously important but volatile year to year for players which must be considered
 
-This translates to targeting WRs and TEs that are vertical threats who are trusted to move the chains for their teams. It also highlights leaning into the risky rookie class based on sheer volume in certain offenses. For me, this led to comparing first down catches from the year prior and average target depth, helpful in rookie cases, for almost every round I drafted a WR or TE.
+This translates to targeting WRs and TEs that are vertical threats and are trusted to move the chains for their teams. It also highlights leaning into the risky rookie class based on sheer volume in certain offenses. For me, this led to comparing first-down catches from the year prior and average target depth, helpful in rookie cases, for almost every round I drafted a WR or TE.
 
 
-##Results
+### Results
 
 1st (10 teams), 2nd (12 teams), 2nd (12 teams) in Points For (points scored by my team throughout weeks 1-14) across three leagues.
 
@@ -234,8 +239,10 @@ The research above led to some very positive outcomes for the season. I had high
 Below are the resources I also used to help draft my team. The first link removed some initial biases I had and allowed me to test it out myself in Python! The second link helped me pick the right combination of RBs for my teams by reviewing the plots of Rushing Yards Over Expected charted with EPA. This made me prioritize the likes of Nick Chubb and Aaron Jones in rounds 2 & 3 and Tony Pollard by round 6 in every league I could. It was also helpful to view QBs on the plot and really highlighted Josh Allen's rushing value. Wish we could see Cam Newton's to compare.
 
 Correlation Matrices and Stacking Players - https://www.fantasyfootballdatapros.com/blog/intermediate/2
-Rushing Yards Over Expected charted with EPA  - https://mfbanalytics.shinyapps.io/RYOE/
 
-Thanks for checking out the post!
+Rushing Yards Over Expected charted with EPA - https://mfbanalytics.shinyapps.io/RYOE/
+
+
+### Thanks for checking out the post!
 
 

@@ -1525,10 +1525,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<p>The beginning of my master’s program curriculum introduced linear regression as the introduction to model building. In practice, we were learning how to build this out in R, so it was exciting to progress in a new skill I came into the program looking to learn. This process timed well with the annual Fantasy Football Draft frenzy in August/September before the season begins. I’ve been playing for almost ten years now and was excited to apply some analytical skills to one of my many sports hobbies.</p>
-<p>I understood my limitations with the predictions from a linear regression, and quite frankly didn’t see the value in generating an ordered list of projected points for players, as that never seemed to help with decision making in years past. “What if a few of your target players get drafted, how do re-prioritize remaining players?” was the question in the back of my mind. So from my perspective, there was more value in identifying key relationships in certain stats to fantasy point output, so I could have a fluid evaluation tool throughout the entire Fantasy Draft. I was specifically interested in identifying key metrics to compare between wide receivers as this position group is obviously the largest amount of players to choose from out of all position groups, and they usually take up the most roster spots per team.</p>
-<p>The data utilized was a graded receiving summary from PFF for the years 2014-2019 which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play, that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name so all needs to be accounted for before moving on from exploratory data analysis.</p>
-<p>See the cleaned dataframe summary below:</p>
+<p>The beginning of my master’s program curriculum introduced linear regression as the introduction to model building. In practice, we were learning how to build this out in R, so it was exciting to progress in a new skill I came into the program looking to learn. This process timed well with the annual Fantasy Football Draft frenzy in August/September before the season begins. I’ve been playing for almost ten years and was excited to apply analytical skills to one of my many sports hobbies.</p>
+<p>I understood my limitations with the predictions from a linear regression and, quite frankly, didn’t see the value in generating an ordered list of projected points for players, as that never seemed to help with decision-making in years past. “What if a few of your target players get drafted, how do you re-prioritize remaining players?” was the question in the back of my mind. So from my perspective, there was more value in identifying key relationships in specific stats to fantasy point output so that I could have a fluid evaluation tool throughout the entire Fantasy Draft. I was specifically interested in identifying key metrics to compare between wide receivers as this position group is obviously the most considerable amount of players to choose from out of all position groups, and they usually take up the most roster spots per team.</p>
+<p>The data utilized was a graded receiving summary from PFF for 2014-2019, which has a mix of raw statistics from the respective year and the company’s graded data assessing performance (0-100), every play that’s aggregated to the game or season level. The next step was everyone’s favorite part, but definitely, the most crucial, and that was data cleaning. Teams’ locations change, players change names, and there are even players with the same name, so all needs to be accounted for before moving on from exploratory data analysis.</p>
+<h1 id="coding-and-modeling-process-below">Coding and Modeling Process Below</h1>
+<p>See the cleaned dataframe summary below that includes RBs, WRs, TEs:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre><code>&#39;data.frame&#39;:   2946 obs. of  28 variables:
  $ year                           : int  2014 2014 2014 2014 2014 2014 2014 2014 2014 2014 ...
@@ -1560,7 +1561,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
  $ penalties                      : int  5 4 2 1 7 1 5 3 2 1 ...
  $ declined_penalties             : int  1 0 0 0 0 0 0 1 0 0 ...</code></pre>
 </div>
-<p>After my data manipulation step, I wanted to filter down on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”:</p>
+<p>After my data manipulation step, I wanted to filter on players in the data with more than 15 targets. From there I created my target variable “Fantasy_WR_Total”:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre><code>&#39;data.frame&#39;:   1648 obs. of  42 variables:
  $ year                           : int  2014 2014 2014 2014 2014 2014 2014 2014 2014 2014 ...
@@ -1660,12 +1661,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
  $ pressures_allowed              : int  146 111 200 112 179 142 111 161 186 173 ...
  $ pbe                            : num  86.9 90.1 83.8 89.1 83.2 86.2 90.1 86.9 82.3 84.9 ...</code></pre>
 </div>
-<p>Keeping just player ID and year with all the other numeric and graded fields, I was ready to test assumptions before model building. I’ll highlight the order of assumption testing below:
-1. Dataframe used for modeling
-2. VIF (Variance Inflation Factor) for multicollinearity
-3. Residual plot followed by Spearman’s Test for Heteroscedascticity
-4. Histogram of residuals followed by Anderson-Darling’s normality test
-5. Other residual plots to assess normality</p>
+<p>Keeping just player ID and year with all the other numeric and graded fields, I was ready to test assumptions before model building. I’ll highlight the order of assumption testing below:</p>
+<ol type="1">
+<li>Dataframe used for modeling</li>
+<li>VIF (Variance Inflation Factor) for multicollinearity</li>
+<li>Residual plot followed by Spearman’s Test for Heteroscedascticity</li>
+<li>Histogram of residuals followed by Anderson-Darling’s normality test</li>
+<li>Other residual plots to assess normality</li>
+</ol>
 <div class="layout-chunk" data-layout="l-body">
 <pre><code>&#39;data.frame&#39;:   1648 obs. of  16 variables:
  $ year                           : int  2014 2014 2014 2014 2014 2014 2014 2014 2014 2014 ...
@@ -1819,6 +1822,7 @@ avoided_tackles                          0.2290650  0.31122556
 targeted_qb_rating                       1.0000000  0.44343509
 touchdowns                               0.4434351  1.00000000</code></pre>
 </div>
+<h2 id="reviewing-final-model-results">Reviewing Final Model Results</h2>
 <p>After paying attention to the first column in our output above to get an idea of the strength of our relationship between our predictors and target. Now all that’s left is reviewing our final model below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre><code>
@@ -1871,6 +1875,20 @@ Residual standard error: 5.138 on 1632 degrees of freedom
 Multiple R-squared:  0.9921,    Adjusted R-squared:  0.992 
 F-statistic: 1.365e+04 on 15 and 1632 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
+<h3 id="main-takeaway">Main Takeaway</h3>
+<ol type="1">
+<li>First downs caught has the strongest relationship and largest impact on fantasy points</li>
+<li>Targets should be prioritized regardless of offensive line pass-blocking performance and QB</li>
+<li>Touchdowns are obviously important but volatile year to year for players which must be considered</li>
+</ol>
+<p>This translates to targeting WRs and TEs that are vertical threats and are trusted to move the chains for their teams. It also highlights leaning into the risky rookie class based on sheer volume in certain offenses. For me, this led to comparing first-down catches from the year prior and average target depth, helpful in rookie cases, for almost every round I drafted a WR or TE.</p>
+<h3 id="results">Results</h3>
+<p>1st (10 teams), 2nd (12 teams), 2nd (12 teams) in Points For (points scored by my team throughout weeks 1-14) across three leagues.</p>
+<p>The research above led to some very positive outcomes for the season. I had high success targeting these types of WRs and TEs such as: DeVonta Smith, Chris Olave, Garrett Wilson, Christian Watson, David Njoku, Cole Kmet, Michael Pittman Jr., Drake London. This pushed me to prioritize workhorse RBs in the beginning of the draft who also got receiving targets since the leagues are PPR scoring (Points Per Reception).</p>
+<p>Below are the resources I also used to help draft my team. The first link removed some initial biases I had and allowed me to test it out myself in Python! The second link helped me pick the right combination of RBs for my teams by reviewing the plots of Rushing Yards Over Expected charted with EPA. This made me prioritize the likes of Nick Chubb and Aaron Jones in rounds 2 &amp; 3 and Tony Pollard by round 6 in every league I could. It was also helpful to view QBs on the plot and really highlighted Josh Allen’s rushing value. Wish we could see Cam Newton’s to compare.</p>
+<p>Correlation Matrices and Stacking Players - <a href="https://www.fantasyfootballdatapros.com/blog/intermediate/2" class="uri">https://www.fantasyfootballdatapros.com/blog/intermediate/2</a></p>
+<p>Rushing Yards Over Expected charted with EPA - <a href="https://mfbanalytics.shinyapps.io/RYOE/" class="uri">https://mfbanalytics.shinyapps.io/RYOE/</a></p>
+<h3 id="thanks-for-checking-out-the-post">Thanks for checking out the post!</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
